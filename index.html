@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Classify</title>
+
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col s-12">
+          <h1>Classify your workspace!</h1>
+        </div>
+      </div>
+      <ul class="collapsible">
+        <div style="text-align:center">
+          <h5>Select an option to classify</h5>
+        </div>
+        <li>
+          <div class="collapsible-header">
+            <i class="material-icons">access_time</i>When did you create these?
+          </div>
+          <div class="collapsible-body">
+            <span>
+              <a
+                class="waves-effect waves-light red btn"
+                onclick="sortByMonth()"
+                >By Month</a
+              >
+              <a class="waves-effect waves-light red btn" onclick="sortByDate()"
+                >By Date</a
+              >
+              <a class="waves-effect waves-light red btn" onclick="sortByYear()"
+                >By Year</a
+              ></span
+            >
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header">
+            <i class="material-icons">all_inclusive</i>How often do you use
+            them?
+          </div>
+          <div class="collapsible-body">
+            <span
+              ><a
+                class="waves-effect waves-light red btn"
+                onclick="sortByUsage()"
+                >Sort by usability</a
+              ></span
+            >
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header">
+            <i class="material-icons">sd_storage</i>How big they are?
+          </div>
+          <div class="collapsible-body">
+            <span
+              ><a
+                class="waves-effect waves-light red btn"
+                onclick="sortBySize()"
+                >Sort by Size</a
+              ></span
+            >
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var elems = document.querySelectorAll(".collapsible");
+        var instances = M.Collapsible.init(elems);
+      });
+    </script>
+    <script>
+      const electron = require("electron");
+      const { ipcRenderer } = electron;
+      function sortByDate() {
+        console.log("date");
+      }
+
+      function sortByMonth() {
+        console.log("month");
+      }
+      function sortByYear() {
+        console.log("year");
+      }
+      function sortByUsage() {
+        console.log("usage");
+      }
+      function sortBySize() {
+        console.log("size");
+      }
+
+      // document.querySelector("form").addEventListener("submit", e => {
+      //   e.preventDefault();
+      //   const { path } = document.querySelector("input").files[0];
+
+      //   ipcRenderer.send("video:submit", path);
+      // });
+
+      // ipcRenderer.on("video:metadata", (event, duration) => {
+      //   document.querySelector(
+      //     "#result"
+      //   ).innerHTML = `Video is ${duration} seconds`;
+      // });
+    </script>
+  </body>
+</html>
