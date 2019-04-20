@@ -20,6 +20,16 @@
           <h1>Classify your workspace!</h1>
         </div>
       </div>
+      <div class="row">
+        <div class="col s-12">
+          <h1>Select your workspace!</h1>
+        </div>
+        <div class="col s-12">
+          <button id="pathBtn" class="btn waves-light teal">Open</button>
+          <input id="path" type="file" style="display: none" webkitdirectory />
+        </div>
+        <div class="col s-6"><span id="selectedPath"></span></div>
+      </div>
       <ul class="collapsible">
         <div style="text-align:center">
           <h5>Select an option to classify</h5>
@@ -61,60 +71,115 @@
         </li>
         <li>
           <div class="collapsible-header">
-            <i class="material-icons">sd_storage</i>How big they are?
+            <i class="material-icons">sd_storage</i>What type of files they are?
           </div>
           <div class="collapsible-body">
             <span
-              ><a
-                class="waves-effect waves-light red btn"
-                onclick="sortBySize()"
-                >Sort by Size</a
+              ><a class="waves-effect waves-light red btn" onclick="sortByExt()"
+                >Sort by Extention</a
               ></span
             >
           </div>
         </li>
       </ul>
     </div>
+
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         var elems = document.querySelectorAll(".collapsible");
         var instances = M.Collapsible.init(elems);
       });
     </script>
+
     <script>
       const electron = require("electron");
-      const { ipcRenderer } = electron;
+      const { remote, ipcRenderer } = electron;
+
+      const mainProcess = remote.require("./index");
+
+      /*-----------------------------------
+       --------- SELECT DIRECTORY ---------
+       ------------------------------------*/
+      let selectedPath;
+      document.getElementById("pathBtn").addEventListener("click", _ => {
+        const path = mainProcess.selectDirectory();
+        console.log(path[0]);
+        var selectedPathSpan = document.querySelector("#selectedPath");
+        selectedPathSpan.innerHTML = path[0];
+        selectedPath = path[0];
+      });
+
+      /*---------------------------------------
+       --------- SORT BY DATE FUNCTION ---------
+       ----------------------------------------*/
+
       function sortByDate() {
-        console.log("date");
+        console.log(selectedPath);
+        if (!selectedPath) {
+          console.log("select a path");
+        } else {
+          console.log("date");
+          ipcRenderer.send("sort:date", selectedPath);
+        }
       }
+
+      ipcRenderer.on("sort:dateDone", event => {
+        alert("DONE");
+      });
+
+      /*-----------------------------------------
+       --------- SORT BY MONTH FUNCTION ---------
+       ----------------------------------------*/
 
       function sortByMonth() {
-        console.log("month");
+        if (!selectedPath) {
+          console.log("select a path");
+        } else {
+          console.log("month");
+          ipcRenderer.send("sort:month", selectedPath);
+        }
       }
+
+      ipcRenderer.on("sort:yearDone", event => {
+        alert("DONE");
+      });
+
+      /*----------------------------------------
+       --------- SORT BY YEAR FUNCTION ---------
+       ----------------------------------------*/
+
       function sortByYear() {
         console.log("year");
+        ipcRenderer.send("sort:year", selectedPath);
       }
+
+      ipcRenderer.on("sort:yearDone", event => {
+        alert("DONE");
+      });
+      /*-----------------------------------------
+       --------- SORT BY USAGE FUNCTION ---------
+       -----------------------------------------*/
+
       function sortByUsage() {
         console.log("usage");
-      }
-      function sortBySize() {
-        console.log("size");
+        ipcRenderer.send("sort:usage", selectedPath);
       }
 
-      // document.querySelector("form").addEventListener("submit", e => {
-      //   e.preventDefault();
-      //   const { path } = document.querySelector("input").files[0];
+      ipcRenderer.on("sort:usageDone", event => {
+        alert("DONE");
+      });
 
-      //   ipcRenderer.send("video:submit", path);
-      // });
+      /*---------------------------------------------
+       --------- SORT BY FILE TYPE FUNCTION ---------
+       ---------------------------------------------*/
 
-      // ipcRenderer.on("video:metadata", (event, duration) => {
-      //   document.querySelector(
-      //     "#result"
-      //   ).innerHTML = `Video is ${duration} seconds`;
-      // });
+      function sortByExt() {
+        console.log("Ext");
+        ipcRenderer.send("sort:ext", selectedPath);
+      }
     </script>
   </body>
 </html>

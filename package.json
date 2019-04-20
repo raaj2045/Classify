@@ -9,6 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "electron": "^4.1.4"
+    "electron": "^4.1.4",
+    "electron-context-menu": "^0.12.0",
+    "file-type": "^10.11.0",
+    "fs-extra": "^7.0.1",
+    "mime-types": "^2.1.23",
+    "prettysize": "^2.0.0",
+    "read-chunk": "^3.2.0"
   }
 }
